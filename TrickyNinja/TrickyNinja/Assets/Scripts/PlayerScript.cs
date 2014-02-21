@@ -20,13 +20,14 @@ public class PlayerScript : EntityScript {
 	public bool bMeleeAttack = false; //remove public when done testing
 	public bool bRopeAttack = false;
 	bool bGoingRight = true;
-	public bool bGrounded = true;
+	bool bGrounded = true;
 	bool bMoved = false;
 	bool bCanJump = false;
 	bool bStoppedJump = true;
 
 	float fCurJumpTime = 0.0f;
 	float fHeight = 0.0f;
+	float fWidth = 0.0f;
 	float fCurAttackTime = 0.0f;
 	float fXAxis;
 	float fYAxis;
@@ -57,6 +58,7 @@ public class PlayerScript : EntityScript {
 		
 		CapsuleCollider myCollider = GetComponent<CapsuleCollider>();
 		fHeight = myCollider.height;
+		fWidth = myCollider.radius;
 	}
 
 	void Update()
@@ -77,7 +79,6 @@ public class PlayerScript : EntityScript {
 			}
 		}
 	}
-
 	
 	// Update is called once per frame
 	//checks to handle if the player has moved or if he was grounded but now is not or if he was not grounded but now is
@@ -127,9 +128,23 @@ public class PlayerScript : EntityScript {
 			bGoingRight = true;
 			eFacing = Facings.Right;
 		}
+		Debug.DrawLine(transform.position, transform.position + transform.right * (fWidth));
+		RaycastHit hit;
+		if(Physics.Raycast(transform.position, transform.right, out hit, fWidth, lmGroundLayer.value))
+		{
+			print (hit.collider.tag);
+			if(hit.collider.tag != "Wall")
+			{
+				transform.Translate(transform.right * fMoveSpeed * Time.deltaTime,Space.World);
+			}
+		}
+		else
+		{
+			transform.Translate(transform.right * fMoveSpeed * Time.deltaTime,Space.World);
+		}
+
 		SendShadowMessage("ChangeFacing" , 0);
 		transform.localScale = new Vector3(1,1,1);
-		transform.Translate(transform.right * fMoveSpeed * Time.deltaTime,Space.World);
 		bMoved = true;
 	}
 	
@@ -142,9 +157,22 @@ public class PlayerScript : EntityScript {
 			bGoingRight = false;
 			eFacing = Facings.Left;
 		}
+		Debug.DrawLine(transform.position, transform.position + transform.right * (fWidth));
+		RaycastHit hit;
+		if(Physics.Raycast(transform.position, transform.right, out hit, fWidth, lmGroundLayer.value))
+		{
+			print (hit.collider.tag);
+			if(hit.collider.tag != "Wall")
+			{
+				transform.Translate(transform.right * fMoveSpeed * Time.deltaTime,Space.World);
+			}
+		}
+		else
+		{
+			transform.Translate(transform.right * fMoveSpeed * Time.deltaTime,Space.World);
+		}
 		SendShadowMessage("ChangeFacing" , 1);
 		transform.localScale = new Vector3(1,1,1);
-		transform.Translate(transform.right * fMoveSpeed * Time.deltaTime,Space.World);
 		bMoved = true;
 	}
 
@@ -257,19 +285,9 @@ public class PlayerScript : EntityScript {
 		{
 			goRopeAttackBox.SetActive(true);
 			fCurAttackTime = fMaxAttackTime;
-
-			/*if(eFacing == Facings.Left)
-			  	goRopePivotPoint.transform.eulerAngles = new Vector3 (0,0,180);
-			else if(eFacing == Facings.Right)
-				goRopePivotPoint.transform.eulerAngles = new Vector3 (0,0,0);
-			else if(eFacing == Facings.Up)
-				goRopePivotPoint.transform.eulerAngles = new Vector3 (0,0,90);
-			else
-				goRopePivotPoint.transform.eulerAngles = new Vector3 (0,0,270);*/
 		}
 
 		SendShadowMessage("Attack");
-	
 		vDirection = Vector3.zero;
 	}
 
@@ -277,23 +295,6 @@ public class PlayerScript : EntityScript {
 	{
 		float angle = Mathf.Atan2(fYAxis, -fXAxis) * Mathf.Rad2Deg;
 		goRopePivotPoint.transform.eulerAngles = new Vector3(0,0,angle);
-
-		/*if(fXAxis < 0 )//facing right
-		{
-			if(fYAxis > 0 && goRopePivotPoint.transform.eulerAngles.z > 90)
-				goRopePivotPoint.transform.eulerAngles = new Vector3(goRopePivotPoint.transform.eulerAngles.x, goRopePivotPoint.transform.eulerAngles.y, goRopePivotPoint.transform.eulerAngles.z - 10);
-			if(fYAxis < 0 && goRopePivotPoint.transform.eulerAngles.z < 270)
-				goRopePivotPoint.transform.eulerAngles = new Vector3(goRopePivotPoint.transform.eulerAngles.x, goRopePivotPoint.transform.eulerAngles.y, goRopePivotPoint.transform.eulerAngles.z + 10);
-
-		}
-		else if (fXAxis > 0)//facing left
-		{
-			if(fYAxis > 0 && goRopePivotPoint.transform.eulerAngles.z < 90)
-				goRopePivotPoint.transform.eulerAngles = new Vector3(goRopePivotPoint.transform.eulerAngles.x, goRopePivotPoint.transform.eulerAngles.y, goRopePivotPoint.transform.eulerAngles.z + 10);
-			if(fYAxis < 0 && goRopePivotPoint.transform.eulerAngles.z > -90)
-				goRopePivotPoint.transform.eulerAngles = new Vector3(goRopePivotPoint.transform.eulerAngles.x, goRopePivotPoint.transform.eulerAngles.y, goRopePivotPoint.transform.eulerAngles.z - 10);
-
-		}*/
 	}
 
 
