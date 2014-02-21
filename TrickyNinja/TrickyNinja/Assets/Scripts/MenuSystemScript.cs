@@ -1,10 +1,16 @@
+
+//Built by: Steven Hoover
+//Last Edited by: Steven Hoover 2/19/2014
+
+
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using GamepadInput;
 
 public delegate void ButtonFunc();
 
-public class Button
+public class sButton
 {
 	string sName;
 	Vector2 vPosition;		//location on screen
@@ -48,6 +54,11 @@ public class Button
 	{
 		return vSize;
 	}
+
+	public string GetLevel()
+	{
+		return sLevel;
+	}
 }
 
 
@@ -62,17 +73,18 @@ public class ControllerMenuInput
 	Dot dotRight;
 	int iIndex =0;
 	int iMaxIndex;
-	public Button active;
+	public sButton active;
 	Texture texture;
+	public bool bActiveButtonConstantPressed = false;
 
 	//variables for preventing continuos circling between options
 	float fTimeSinceLastMove =0;
 	public float fTimeBetweenMoves = 2;
 
-	public void Init( Texture aTexture , int aiMax, int iDotSize, float afTimeBetweenMoves)
+	public void Init( Texture aTexture , int aiMaxIndex, int iDotSize, float afTimeBetweenMoves)
 	{
 		texture = aTexture;
-		iMaxIndex = aiMax;
+		iMaxIndex = aiMaxIndex;
 
 		dotLeft = new Dot();
 		dotLeft.vSize = new Vector2(iDotSize,iDotSize);
@@ -91,11 +103,11 @@ public class ControllerMenuInput
 		{
 			fTimeSinceLastMove = 0;
 
-			if( Input.GetAxis("Player1Vertical") > 0)
+			if( GamePad.GetAxis(GamePad.Axis.LeftStick , GamePad.Index.One).y < 0) //if( Input.GetAxis("Player1Vertical") > 0)
 			{
 				iIndex++;
 			}
-			if( Input.GetAxis("Player1Vertical") < 0)
+			if( GamePad.GetAxis(GamePad.Axis.LeftStick , GamePad.Index.One ).y > 0)
 			{
 				iIndex--;
 			}
@@ -110,7 +122,7 @@ public class ControllerMenuInput
 			}
 		}
 
-		if( Input.GetKey ( KeyCode.Joystick1Button0 ) )
+		if( GamePad.GetButtonDown(GamePad.Button.A , GamePad.Index.One) || bActiveButtonConstantPressed)
 		{
 			active.BFexecute();
 		}
@@ -127,7 +139,7 @@ public class ControllerMenuInput
 		return iIndex;
 	}
 
-	public void SetActiveButton( Button aActive)
+	public void SetActiveButton( sButton aActive)
 	{
 		active = aActive;
 		
@@ -138,6 +150,11 @@ public class ControllerMenuInput
 		dotRight.vPosition = new Vector2(pos.x + active.GetSize().x, pos.y - 20);
 		//
 		dotLeft.vPosition = new Vector2(pos.x - dotLeft.vSize.x, pos.y -20);
+	}
+
+	public sButton GrabActiveButton()
+	{
+		return active;
 	}
 }
 
@@ -155,7 +172,7 @@ public class MenuSystemScript : MonoBehaviour {
 	public string ProfilesLevel = "Profiles";
 	public string OptionsLevel = "Options";
 	public string CreditsLevel = "Credits";
-	List<Button> lButtons;
+	List<sButton> lButtons;
 	// Use this for initialization
 	void Start () 
 	{
@@ -163,13 +180,13 @@ public class MenuSystemScript : MonoBehaviour {
 		controller.Init( texture , (int)(fNumOfButtons -1) , iDotSize, fTimeBetweenMoves);
 
 		float fButtonCount =0;
-		lButtons = new List<Button>();
+		lButtons = new List<sButton>();
 		fScreenWidth = Screen.width;
 		fScreenHeight = Screen.height;
 		fSpaceForButton.y = (fScreenHeight / 2) / fNumOfButtons;
 		fSpaceForButton.x = fScreenWidth / 4;
 
-		Button b = new Button();
+		sButton b = new sButton();
 		b.Init("Play", new Vector2( (fScreenWidth/2) - (fScreenWidth/8) , (fScreenHeight/2) +  fSpaceForButton.y*fButtonCount) , fSpaceForButton, b.LoadLevel , PlayLevel);
 		lButtons.Add( b );
 		fButtonCount++;
@@ -179,22 +196,22 @@ public class MenuSystemScript : MonoBehaviour {
 //		lButtons.Add( b2 );
 //		fButtonCount++;
 
-		Button b3 = new Button();
+		sButton b3 = new sButton();
 		b3.Init("Profiles",new Vector2( fScreenWidth/2 - fScreenWidth/8 , fScreenHeight/2 +  fSpaceForButton.y*fButtonCount) , fSpaceForButton, b3.LoadLevel , ProfilesLevel);
 		lButtons.Add( b3 );
 		fButtonCount++;
 
-		Button b4 = new Button();
+		sButton b4 = new sButton();
 		b4.Init("Options",new Vector2( fScreenWidth/2 - fScreenWidth/8 , fScreenHeight/2 +  fSpaceForButton.y*fButtonCount) , fSpaceForButton, b4.LoadLevel , OptionsLevel);
 		lButtons.Add( b4 );
 		fButtonCount++;
 
-		Button b5 = new Button();
+		sButton b5 = new sButton();
 		b5.Init("Credits",new Vector2( fScreenWidth/2 - fScreenWidth/8 , fScreenHeight/2 +  fSpaceForButton.y*fButtonCount) , fSpaceForButton, b5.LoadLevel , CreditsLevel);
 		lButtons.Add( b5 );
 		fButtonCount++;
 
-		Button b6 = new Button();
+		sButton b6 = new sButton();
 		b6.Init("Exit",new Vector2( fScreenWidth/2 - fScreenWidth/8 , fScreenHeight/2 +  fSpaceForButton.y*fButtonCount) , fSpaceForButton, b5.ExitGame , "Credits");
 		lButtons.Add( b6 );
 		fButtonCount++;
@@ -214,7 +231,7 @@ public class MenuSystemScript : MonoBehaviour {
 
 	void OnGUI()
 	{
-		foreach( Button b in lButtons )
+		foreach( sButton b in lButtons )
 		{
 			b.Draw();
 		}
