@@ -163,13 +163,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 712352605}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 980a7e15f05bf42409726f1592ee3396, type: 3}
+  m_Script: {fileID: 11500000, guid: d2c6f684707947841aeb0d315adac5bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   texture: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
   iDotSize: 50
-  fTimeBetweenMoves: .200000003
-  PlayLevel: TrickyNinja
+  fTimeBetweenMoves: 1
+  PlayLevel: level
   ProfilesLevel: Profiles
   OptionsLevel: Options
   CreditsLevel: Credits
