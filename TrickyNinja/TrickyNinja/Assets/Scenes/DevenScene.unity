@@ -2407,6 +2407,7 @@ GameObject:
   - 33: {fileID: 361444662}
   - 23: {fileID: 361444661}
   - 95: {fileID: 361444660}
+  - 114: {fileID: 361444664}
   m_Layer: 0
   m_Name: BurrowerPrefab
   m_TagString: Untagged
@@ -2470,6 +2471,25 @@ Transform:
   m_LocalScale: {x: .504597068, y: .504597068, z: .504597068}
   m_Children: []
   m_Father: {fileID: 0}
+--- !u!114 &361444664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400000, guid: 11eed3e40f9754d4fb46eab8a7426f89,
+    type: 2}
+  m_PrefabInternal: {fileID: 1763010529}
+  m_GameObject: {fileID: 361444659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b87828717bf49e4fa67a73e099ec472, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bIncorporeal: 0
+  vSpawnPoint: {x: 0, y: 0, z: 0}
+  fHealth: 0
+  fMoveSpeed: 2.75
+  fWaitToAttack: 0
+  fWaitToChase: 0
+  gPlayer: {fileID: 100002, guid: 86585cd826dac9a40947b4c8376ac275, type: 2}
 --- !u!1 &378103481
 GameObject:
   m_ObjectHideFlags: 0
