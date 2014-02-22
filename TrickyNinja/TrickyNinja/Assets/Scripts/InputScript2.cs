@@ -105,20 +105,20 @@ public class InputScript2 : MonoBehaviour {
 	{
 		for(int i = 0; i < gPlayer.Length; i++)
 		{
-			if(Input.GetKey(strctPlayerInputs[i].kRightKey) || Input.GetAxis("Player"+(i+1)+"Horizontal") < 0)
+			if(Input.GetKey(strctPlayerInputs[i].kRightKey) || Input.GetAxis("Player"+(i+1)+"Horizontal") == -1)
 			{
 				gPlayer[i].SendMessage("MoveRight", SendMessageOptions.DontRequireReceiver);
 			}
 			
-			if(Input.GetKey(strctPlayerInputs[i].kLeftKey) ||  Input.GetAxis("Player"+(i+1)+"Horizontal") > 0)
+			if(Input.GetKey(strctPlayerInputs[i].kLeftKey) ||  Input.GetAxis("Player"+(i+1)+"Horizontal") == 1)
 			{
 				gPlayer[i].SendMessage("MoveLeft", SendMessageOptions.DontRequireReceiver);
 			}
-			if(Input.GetKey(strctPlayerInputs[i].kUpKey) || Input.GetAxis("Player"+(i+1)+"Vertical") > .9f)
+			if(Input.GetKey(strctPlayerInputs[i].kUpKey) || Input.GetAxis("Player"+(i+1)+"Vertical") == 1)
 			{
 				gPlayer[i].SendMessage("LookUp", SendMessageOptions.DontRequireReceiver);
 			}
-			if(Input.GetKey(strctPlayerInputs[i].kCrouchKey) || Input.GetAxis("Player"+(i+1)+"Vertical") < -.9f)
+			if(Input.GetKey(strctPlayerInputs[i].kCrouchKey) || Input.GetAxis("Player"+(i+1)+"Vertical") == -1)
 			{
 				gPlayer[i].SendMessage("Crouch", SendMessageOptions.DontRequireReceiver);
 			}

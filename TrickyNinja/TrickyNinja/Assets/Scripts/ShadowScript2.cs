@@ -15,6 +15,7 @@ public class ShadowScript2 : EntityScript {
 	public Facings eFacing = Facings.Right;
 	public float fMoveSpeed = 5.0f;
 	public GameObject gPlayerAttackPrefab;
+	public GameObject goCharacter;
 	public int iDelay = 60;
 
 	List<Vector3> lvPositions = new List<Vector3>();
@@ -33,19 +34,23 @@ public class ShadowScript2 : EntityScript {
 		transform.localScale = new Vector3(1, 1, 1);
 		if(eFacing == Facings.Left)
 		{
+			goCharacter.animation.Play("Walk");
 			transform.eulerAngles = new Vector3(0, 180, 0);
 		}
 		if(eFacing == Facings.Right)
 		{
+			goCharacter.animation.Play("Walk");
 			transform.eulerAngles = new Vector3(0, 0, 0);
 		}
 		if(eFacing == Facings.Crouch)
 		{
-			transform.localScale = new Vector3(1, .5f, 1);
+			goCharacter.animation.Play("Crouch");
+			//transform.localScale = new Vector3(1, .5f, 1);
 		}
 		if(eFacing == Facings.Up)
 		{
-			transform.localScale = new Vector3(1, 1.5f, 1);
+			goCharacter.animation.Play("LookUp");
+			//transform.localScale = new Vector3(1, 1.5f, 1);
 		}
 	
 	}

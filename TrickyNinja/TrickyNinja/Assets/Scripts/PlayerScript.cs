@@ -20,13 +20,14 @@ public class PlayerScript : EntityScript {
 	public bool bMeleeAttack = false; //remove public when done testing
 	public bool bRopeAttack = false;
 	bool bGoingRight = true;
-	public bool bGrounded = true;
+	bool bGrounded = true;
 	bool bMoved = false;
 	bool bCanJump = false;
 	bool bStoppedJump = true;
 
 	float fCurJumpTime = 0.0f;
 	float fHeight = 0.0f;
+	float fWidth = 0.0f;
 	float fCurAttackTime = 0.0f;
 	float fXAxis;
 	float fYAxis;
@@ -43,10 +44,12 @@ public class PlayerScript : EntityScript {
 	public GameObject goRopePivotPoint;
 	public GameObject goRopeAttackBox;
 	public LayerMask lmGroundLayer;
+	public GameObject goCharacter;
 	
 	// Use this for initialization
 	// gets the input script from the main camera and figures out how tall the character is for movement
 	void Start () {
+		goCharacter.animation.Play("Idle");
 		//disable the attack boxes 
 		goRopeAttackBox.SetActive(false);
 		goUpAttackBox.SetActive(false);
@@ -57,10 +60,24 @@ public class PlayerScript : EntityScript {
 		
 		CapsuleCollider myCollider = GetComponent<CapsuleCollider>();
 		fHeight = myCollider.height;
+		fWidth = myCollider.radius;
 	}
 
 	void Update()
 	{
+		print(fXAxis + ", " + fYAxis);
+
+		if(!goCharacter.animation.IsPlaying("Idle"))
+		{
+			if(bGrounded && fXAxis != 1 && fXAxis != 1 && fYAxis != 1 && fYAxis != -1)
+				goCharacter.animation.Play("Idle");
+
+			transform.eulerAngles = new Vector3(0, 0, 0);
+			bGoingRight = true;
+			eFacing = Facings.Right;
+			SendShadowMessage("ChangeFacing" , 0);
+		}
+
 		//if currently attacking resolve it
 		if(fCurAttackTime > 0)
 		{
@@ -77,7 +94,6 @@ public class PlayerScript : EntityScript {
 			}
 		}
 	}
-
 	
 	// Update is called once per frame
 	//checks to handle if the player has moved or if he was grounded but now is not or if he was not grounded but now is
@@ -90,12 +106,16 @@ public class PlayerScript : EntityScript {
 			{
 				if(hit.collider.tag != "Ground")
 				{
+					if(!goCharacter.animation.IsPlaying("Fall"))
+						goCharacter.animation.Play("Fall");
 					bGrounded = false;
 					bCanJump = false;
 				}
 			}
 			else
 			{
+				if(!goCharacter.animation.IsPlaying("Fall"))
+					goCharacter.animation.Play("Fall");
 				bGrounded = false;
 				bCanJump = false;
 			}
@@ -105,6 +125,8 @@ public class PlayerScript : EntityScript {
 		{
 			if(!bCanJump)
 			{
+				if(!goCharacter.animation.IsPlaying("Fall"))
+					goCharacter.animation.Play("Fall");
 				transform.Translate(-transform.up * fMoveSpeed * Time.deltaTime, Space.World);
 				bMoved = true;
 			}
@@ -121,31 +143,62 @@ public class PlayerScript : EntityScript {
 	//handles if the player needs to change facing and moving right
 	void MoveRight()
 	{
-		if(!bGoingRight)
+		if(fYAxis != -1)
 		{
-			transform.eulerAngles = new Vector3(0, 0, 0);
-			bGoingRight = true;
-			eFacing = Facings.Right;
+			if(!goCharacter.animation.IsPlaying("Jump") && !goCharacter.animation.IsPlaying("Fall"))
+				goCharacter.animation.Play("Walk");
+			if(!bGoingRight)
+			{
+				transform.eulerAngles = new Vector3(0, 0, 0);
+				bGoingRight = true;
+				eFacing = Facings.Right;
+			}
+			RaycastHit hit;
+			if(Physics.Raycast(transform.position, transform.right, out hit, fWidth, lmGroundLayer.value))
+			{
+				if(hit.collider.tag != "Wall")
+				{
+					transform.Translate(transform.right * fMoveSpeed * Time.deltaTime,Space.World);
+				}
+			}
+			else
+			{
+				transform.Translate(transform.right * fMoveSpeed * Time.deltaTime,Space.World);
+			}
+			SendShadowMessage("ChangeFacing" , 0);
+			bMoved = true;
 		}
-		SendShadowMessage("ChangeFacing" , 0);
-		transform.localScale = new Vector3(1,1,1);
-		transform.Translate(transform.right * fMoveSpeed * Time.deltaTime,Space.World);
-		bMoved = true;
 	}
 	
 	//handles if the player needs to change facing and moving left
 	void MoveLeft()
 	{
-		if(bGoingRight)
+		if(fYAxis != -1)
 		{
-			transform.eulerAngles = new Vector3(0, 180, 0);
-			bGoingRight = false;
-			eFacing = Facings.Left;
-		}
-		SendShadowMessage("ChangeFacing" , 1);
-		transform.localScale = new Vector3(1,1,1);
-		transform.Translate(transform.right * fMoveSpeed * Time.deltaTime,Space.World);
+			if(!goCharacter.animation.IsPlaying("Jump") && !goCharacter.animation.IsPlaying("Fall"))
+				goCharacter.animation.Play("Walk");
+			if(bGoingRight)
+			{
+				transform.eulerAngles = new Vector3(0, 180, 0);
+				bGoingRight = false;
+				eFacing = Facings.Left;
+			}
+			RaycastHit hit;
+			if(Physics.Raycast(transform.position, transform.right, out hit, fWidth, lmGroundLayer.value))
+			{
+				print (hit.collider.tag);
+				if(hit.collider.tag != "Wall")
+				{
+					transform.Translate(transform.right * fMoveSpeed * Time.deltaTime,Space.World);
+				}
+			}
+			else
+			{
+				transform.Translate(transform.right * fMoveSpeed * Time.deltaTime,Space.World);
+			}
+			SendShadowMessage("ChangeFacing" , 1);
 		bMoved = true;
+		}
 	}
 
 	//ensures that the player is allowed to jump and then moves him up
@@ -153,6 +206,7 @@ public class PlayerScript : EntityScript {
 	{
 		if(bCanJump)
 		{
+			goCharacter.animation.Play("Jump");
 			bGrounded = false;
 			transform.Translate(transform.up * fMoveSpeed * Time.deltaTime);
 			fCurJumpTime += Time.deltaTime;
@@ -188,8 +242,8 @@ public class PlayerScript : EntityScript {
 	//handles the player looking up and informs the shadows to do the same
 	void LookUp()
 	{
+		goCharacter.animation.Play("LookUp");
 		eFacing = Facings.Up;
-		transform.localScale = new Vector3(1,1.5f,1);
 		SendShadowMessage("ChangeFacing" , 2);
 	}
 	
@@ -197,7 +251,7 @@ public class PlayerScript : EntityScript {
 	void Crouch()
 	{
 		eFacing = Facings.Crouch;
-		transform.localScale = new Vector3(1,.5f,1);
+		goCharacter.animation.Play("Duck");
 		SendShadowMessage("ChangeFacing" , 3);
 	}
 
@@ -257,19 +311,9 @@ public class PlayerScript : EntityScript {
 		{
 			goRopeAttackBox.SetActive(true);
 			fCurAttackTime = fMaxAttackTime;
-
-			/*if(eFacing == Facings.Left)
-			  	goRopePivotPoint.transform.eulerAngles = new Vector3 (0,0,180);
-			else if(eFacing == Facings.Right)
-				goRopePivotPoint.transform.eulerAngles = new Vector3 (0,0,0);
-			else if(eFacing == Facings.Up)
-				goRopePivotPoint.transform.eulerAngles = new Vector3 (0,0,90);
-			else
-				goRopePivotPoint.transform.eulerAngles = new Vector3 (0,0,270);*/
 		}
 
 		SendShadowMessage("Attack");
-	
 		vDirection = Vector3.zero;
 	}
 
@@ -277,23 +321,6 @@ public class PlayerScript : EntityScript {
 	{
 		float angle = Mathf.Atan2(fYAxis, -fXAxis) * Mathf.Rad2Deg;
 		goRopePivotPoint.transform.eulerAngles = new Vector3(0,0,angle);
-
-		/*if(fXAxis < 0 )//facing right
-		{
-			if(fYAxis > 0 && goRopePivotPoint.transform.eulerAngles.z > 90)
-				goRopePivotPoint.transform.eulerAngles = new Vector3(goRopePivotPoint.transform.eulerAngles.x, goRopePivotPoint.transform.eulerAngles.y, goRopePivotPoint.transform.eulerAngles.z - 10);
-			if(fYAxis < 0 && goRopePivotPoint.transform.eulerAngles.z < 270)
-				goRopePivotPoint.transform.eulerAngles = new Vector3(goRopePivotPoint.transform.eulerAngles.x, goRopePivotPoint.transform.eulerAngles.y, goRopePivotPoint.transform.eulerAngles.z + 10);
-
-		}
-		else if (fXAxis > 0)//facing left
-		{
-			if(fYAxis > 0 && goRopePivotPoint.transform.eulerAngles.z < 90)
-				goRopePivotPoint.transform.eulerAngles = new Vector3(goRopePivotPoint.transform.eulerAngles.x, goRopePivotPoint.transform.eulerAngles.y, goRopePivotPoint.transform.eulerAngles.z + 10);
-			if(fYAxis < 0 && goRopePivotPoint.transform.eulerAngles.z > -90)
-				goRopePivotPoint.transform.eulerAngles = new Vector3(goRopePivotPoint.transform.eulerAngles.x, goRopePivotPoint.transform.eulerAngles.y, goRopePivotPoint.transform.eulerAngles.z - 10);
-
-		}*/
 	}
 
 
