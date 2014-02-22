@@ -10,7 +10,7 @@ public static class FileIO
 {
 	static string profilesPath;
 
-	static ProfileContainer profileContainer;
+	public static ProfileContainer profileContainer;
 
 	public static void AddToContainer( Profile aProfile )
 	{
@@ -48,11 +48,24 @@ public static class FileIO
 		}
 		return profilesPath;
 	}
+
 	public static void SetProfilesPath(string aPath)
 	{
 		profilesPath = aPath;
 	}
 
+
+	public static Profile GetProfileByName( string aName)
+	{
+		foreach( Profile p in profileContainer.profiles )
+		{
+			if( p.name == aName )
+			{
+				return p;
+			}
+		}
+		return new Profile();
+	}
 }
 
 public class ProfileContainer

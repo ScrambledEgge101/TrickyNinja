@@ -69,7 +69,7 @@ public class ProfilesSceneScript : MonoBehaviour {
 	ProfileSceneState state;
 	Profile loadedProfile;
 	Vector2 vSize;
-
+	bool started = false;
 	//varibales set by editor
 	public float buttonWidth = 50;
 	public float buttonHeight = 50;
@@ -108,6 +108,7 @@ public class ProfilesSceneScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
+		started = true;
 		FileIO.LoadProfiles();
 		controllerMenuInput = new ControllerMenuInput();
 		controllerMenuInput.Init( texture , 9 , iDotSize , fTimeBetweenMoves );
@@ -146,6 +147,7 @@ public class ProfilesSceneScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
+		if( !started ) Start();
 		if( state == ProfileSceneState.Edit )
 		{
 			SendActiveButton();
@@ -155,12 +157,13 @@ public class ProfilesSceneScript : MonoBehaviour {
 
 	void OnGUI()
 	{
+		if( !started ) Start();
 		if( state == ProfileSceneState.CreateLoad )
 		{
 			if( createProfileButton == null )
 			{
 				createProfileButton = new sButton();
-				createProfileButton.Init("Create Profile", new Vector2(100,100) , vSize , CreateProfileFunc , "None" );
+				createProfileButton.Init("Create Profile", new Vector2(100,100) , new Vector2(buttonWidth, buttonHeight) , CreateProfileFunc , "None" );
 			}
 			createProfileButton.Draw();
 			//loadProfileButton.Draw();
