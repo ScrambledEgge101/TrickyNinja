@@ -4434,7 +4434,7 @@ Renderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_LightmapIndex: 255
@@ -4497,7 +4497,7 @@ Renderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100006}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_LightmapIndex: 255
@@ -4741,7 +4741,7 @@ MonoBehaviour:
   lmGroundLayer:
     serializedVersion: 2
     m_Bits: 1024
-  goCharacter: {fileID: 0}
+  goCharacter: {fileID: 100324}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1

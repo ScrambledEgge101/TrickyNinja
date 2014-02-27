@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 535b34963cde4f34e87e8e4a69582a6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sFirstLevelName: TrickyNinja
+  sFirstLevelName: DevenScene
   texture: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
   iDotSize: 50
   fTimeBetweenMoves: 1
