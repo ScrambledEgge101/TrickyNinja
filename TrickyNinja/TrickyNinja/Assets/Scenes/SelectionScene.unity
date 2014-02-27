@@ -222,7 +222,7 @@ MonoBehaviour:
   fTimeBetweenMoves: 1
   standardButton:
     serializedVersion: 2
-    x: 0
-    y: 0
+    x: 100
+    y: 100
     width: 50
     height: 50
