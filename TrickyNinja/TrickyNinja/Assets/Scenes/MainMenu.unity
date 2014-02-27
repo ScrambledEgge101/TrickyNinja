@@ -169,7 +169,7 @@ MonoBehaviour:
   texture: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
   iDotSize: 50
   fTimeBetweenMoves: 1
-  PlayLevel: TrickyNinja
+  PlayLevel: SelectionScene
   ProfilesLevel: Profiles
   OptionsLevel: Options
   CreditsLevel: Credits

@@ -27,12 +27,14 @@ public class sButton
 		sLevel = asLevel;
 	}
 
-	public void Draw()
+	public bool Draw()
 	{
 		if(GUI.Button(new Rect(vPosition.x,vPosition.y,vSize.x,vSize.y/2), sName) )
 		{
 			BFexecute();
+			return true;
 		}
+		return false;
 	}
 
 	public void LoadLevel()
