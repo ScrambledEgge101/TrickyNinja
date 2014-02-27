@@ -84,9 +84,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bIncorporeal: 0
-  vSpawnPoint: {x: 0, y: 0, z: 0}
+  vSpawnPoint: {x: 0, y: -0, z: 0}
   fHealth: 0
-  fMoveSpeed: 2.75
+  fMoveSpeed: 8.5
+  fWaitToAttack: .400000006
+  fWaitToChase: .550000012
   gPlayer: {fileID: 100002, guid: 86585cd826dac9a40947b4c8376ac275, type: 2}
 --- !u!1001 &100100000
 Prefab:

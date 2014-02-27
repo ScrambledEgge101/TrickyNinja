@@ -2969,7 +2969,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: f8ce7da3830068e429b8f30e895471f3, type: 2}
       propertyPath: vSpawnPoint.y
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5400000, guid: f8ce7da3830068e429b8f30e895471f3, type: 2}
       propertyPath: m_Constraints
@@ -3756,7 +3756,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: 11eed3e40f9754d4fb46eab8a7426f89, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -.994501412
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 11eed3e40f9754d4fb46eab8a7426f89, type: 2}
       propertyPath: m_LocalPosition.y
@@ -3804,7 +3804,7 @@ Prefab:
       objectReference: {fileID: 176561737}
     - target: {fileID: 11400000, guid: 11eed3e40f9754d4fb46eab8a7426f89, type: 2}
       propertyPath: fMoveSpeed
-      value: 5
+      value: 8.5
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 11eed3e40f9754d4fb46eab8a7426f89, type: 2}
       propertyPath: vSpawnPoint.y
@@ -3816,11 +3816,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 11eed3e40f9754d4fb46eab8a7426f89, type: 2}
       propertyPath: fWaitToAttack
-      value: .550000012
+      value: .400000006
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 11eed3e40f9754d4fb46eab8a7426f89, type: 2}
       propertyPath: fWaitToChase
-      value: 1.25
+      value: .550000012
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 11eed3e40f9754d4fb46eab8a7426f89, type: 2}
@@ -4118,7 +4118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bIncorporeal: 0
-  vSpawnPoint: {x: 0, y: 2, z: 0}
+  vSpawnPoint: {x: 0, y: 1, z: 0}
   fHealth: 1
   fSpeed: 3
 --- !u!54 &574451208
@@ -9672,6 +9672,14 @@ Prefab:
       propertyPath: goCharacter
       value: 
       objectReference: {fileID: 1195539296}
+    - target: {fileID: 13600000, guid: 86585cd826dac9a40947b4c8376ac275, type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6500004, guid: 86585cd826dac9a40947b4c8376ac275, type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 86585cd826dac9a40947b4c8376ac275, type: 2}
   m_RootGameObject: {fileID: 176561737}
@@ -10952,6 +10960,7 @@ GameObject:
   - 23: {fileID: 1682568024}
   - 95: {fileID: 1682568023}
   - 114: {fileID: 1682568027}
+  - 65: {fileID: 1682568028}
   m_Layer: 0
   m_Name: BurrowerPrefab
   m_TagString: Untagged
@@ -11011,7 +11020,7 @@ Transform:
   m_PrefabInternal: {fileID: 542355661}
   m_GameObject: {fileID: 1682568022}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -.75, z: 25}
+  m_LocalPosition: {x: -.994501412, y: -.75, z: 25}
   m_LocalScale: {x: 1.0179857, y: 1.0179857, z: 1.0179857}
   m_Children: []
   m_Father: {fileID: 0}
@@ -11030,10 +11039,22 @@ MonoBehaviour:
   bIncorporeal: 0
   vSpawnPoint: {x: 0, y: -.75, z: 25}
   fHealth: 0
-  fMoveSpeed: 5
-  fWaitToAttack: .550000012
-  fWaitToChase: 1.25
+  fMoveSpeed: 8.5
+  fWaitToAttack: .400000006
+  fWaitToChase: .550000012
   gPlayer: {fileID: 176561737}
+--- !u!65 &1682568028
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1682568022}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.12, y: 1.5, z: 1.06436753}
+  m_Center: {x: 0, y: -.0199999996, z: .25}
 --- !u!1 &1685170995
 GameObject:
   m_ObjectHideFlags: 0
@@ -14255,7 +14276,7 @@ BoxCollider:
   m_GameObject: {fileID: 2054141769}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
