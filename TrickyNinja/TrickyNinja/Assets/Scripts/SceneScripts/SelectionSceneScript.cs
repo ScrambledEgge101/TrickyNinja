@@ -26,13 +26,13 @@ public class SelectionSceneScript : MonoBehaviour {
 		menuInput.Init( texture , FileIO.profileContainer.profiles.Count -1 , iDotSize , fTimeBetweenMoves );
 		buttons = new List<sButton>();
 
-		print ( FileIO.profileContainer.profiles.Count ); //debug
+		//print ( FileIO.profileContainer.profiles.Count ); //debug
 		//add buttons
 		int count = 0; // temp way to move buttons
 		foreach( Profile p in FileIO.profileContainer.profiles )
 		{
 			sButton b = new sButton();
-			b.Init( p.name , new Vector2( standardButton.x, standardButton.y - count*30) , new Vector2( standardButton.width, standardButton.height ) , LoadProfile , p.name );
+			b.Init( p.name , new Vector2( (Screen.width / 2) - standardButton.width/2 , standardButton.y - count*30) , new Vector2( standardButton.width, standardButton.height ) , LoadProfile , p.name );
 			buttons.Add( b );
 			count++;
 		}

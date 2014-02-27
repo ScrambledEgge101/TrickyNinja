@@ -3,10 +3,10 @@ using System.Collections;
 
 public class SwordGuy : EnemyScript {
 
-	GameObject gPlayer;
 	public float fSpeed;
-	//justin comment
-	
+
+	GameObject gPlayer;	
+	bool bGoingUp;
 
 	// Use this for initialization
 	void Start () {
@@ -21,14 +21,36 @@ public class SwordGuy : EnemyScript {
 	public override void Hurt(int aiDamage)
 	{
 		fHealth -= aiDamage;
-		if (fHealth < 0)
+		bGoingUp = true;
+		if (fHealth < -2)
 		{
 			Die ();
 		}
 	}
 	
+	public override void Move ()
+	{
+		if (bGoingUp == true)
+		{
+			transform.Translate (0.0f, 20.0f*Time.deltaTime, 12.0f*Time.deltaTime);
+			transform.position = new Vector3(transform.position.x, transform.position.y, 25.0f);
+			if (transform.position.y > vSpawnPoint.y+1.75f)
+			{
+				bGoingUp = false;
+			}
+		}
+		if (transform.position.y > vSpawnPoint.y && bGoingUp == false)
+		{
+			transform.Translate (0.0f, -6.0f * Time.deltaTime, 0.0f);
+		}
+		if (transform.position.y < vSpawnPoint.y + 0.02f && bGoingUp == false)
+		{
+			ChasePlayer (gPlayer, fSpeed*Time.deltaTime);
+		}
+	}
+	
 	// Update is called once per frame
 	void Update () {
-		ChasePlayer (gPlayer, fSpeed*Time.deltaTime);
+		Move ();
 	}
 }

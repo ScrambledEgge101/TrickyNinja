@@ -79,6 +79,10 @@ public class ShadowScript2 : EntityScript {
 		if(eFacing == Facings.Crouch)
 		{
 			goCharacter.animation.Play("Duck");
+<<<<<<< HEAD
+=======
+			//transform.localScale = new Vector3(1, .5f, 1);
+>>>>>>> upstream/master
 		}
 		if(eFacing == Facings.Up)
 		{

@@ -12,7 +12,7 @@ public class EnemyScript : EntityScript {
 	void Start () {
 	
 	}
-	
+
 	public void ChasePlayer(GameObject gPlayer, float fChaseSpeed)
 	{
 		//if (gPlayer != null)

@@ -8,7 +8,7 @@ using GamepadInput;
 using System.Xml;
 using System.Xml.Serialization;
 
-public enum ProfileSceneState {CreateLoad, Edit};
+//public enum ProfileSceneState {CreateLoad, Edit};
 public enum Button { A, B, Y, X, RightShoulder, LeftShoulder, RightStick, LeftStick, Back, Start, LeftTrigger, RightTrigger , None};
 
 public class Profile
@@ -65,14 +65,16 @@ public class Profile
 }
 
 public class ProfilesSceneScript : MonoBehaviour {
+
 	ControllerMenuInput controllerMenuInput;
-	ProfileSceneState state;
+	//ProfileSceneState state;
 	Profile loadedProfile;
 	Vector2 vSize;
 	bool started = false;
+	int mainColumn = 0;
 	//varibales set by editor
-	public float buttonWidth = 50;
-	public float buttonHeight = 50;
+	public float colWidth = 200;
+	public float rowHeight = 50;
 	public Texture texture;
 	public int iDotSize = 50;
 	public float fTimeBetweenMoves = 2;
@@ -104,7 +106,8 @@ public class ProfilesSceneScript : MonoBehaviour {
 	sButton editSwap3Button;
 	sButton editSwap4Button;
 	sButton exitButton;
-	List<sButton> editButtons;
+	sButton saveButton;
+	List<sButton> profileButtons;
 	// Use this for initialization
 	void Start () 
 	{
@@ -113,16 +116,24 @@ public class ProfilesSceneScript : MonoBehaviour {
 		controllerMenuInput = new ControllerMenuInput();
 		controllerMenuInput.Init( texture , 9 , iDotSize , fTimeBetweenMoves );
 		controllerMenuInput.bActiveButtonConstantPressed = true;
-		state = new ProfileSceneState();
-		vSize = new Vector2( buttonWidth, buttonHeight );
+		//state = new ProfileSceneState();
+		vSize = new Vector2( colWidth, rowHeight );
 
 		createProfileButton = new sButton();
-		createProfileButton.Init("Create Profile", new Vector2(100,100) , vSize , CreateProfileFunc , "None" );
+		createProfileButton.Init("Create Profile", new Vector2( colWidth / 2, rowHeight * 2 ) , vSize , CreateProfileFunc , "None" );
 
 		loadProfileButton = new sButton();
 		loadProfileButton.Init("Load Profile", new Vector2(200,200) , vSize , CreateProfileFunc , "None" );
 
-		editButtons = new List<sButton>();
+		exitButton = new sButton();
+		exitButton.Init("Exit" , new Vector2( colWidth /2 , rowHeight * 4 ) , vSize , ExitProfileButtonFunc , "Exit" );
+
+		saveButton = new sButton();
+		saveButton.Init("Save" , new Vector2( colWidth /2 , rowHeight * 3 ) , vSize , SaveProfileButtonFunc , "Save" );
+		profileButtons = new List<sButton>();
+		MakeProfileButtons(false);
+
+		//editButtons = new List<sButton>();
 		editNameButton = new sButton();
 		editNameButton.Init("Name: " , new Vector2( rNameText.x , rNameText.y ) , new Vector2( rNameText.width, rNameText.height ) , SwitchButton , "Name" );
 		editAttackButton = new sButton();
@@ -139,41 +150,39 @@ public class ProfilesSceneScript : MonoBehaviour {
 		editSwap3Button.Init("Swap3: " ,new Vector2( rSwap3Dis.x , rSwap3Dis.y ) , new Vector2( rSwap3Dis.width, rSwap3Dis.height ), SwitchButton , "Swap3" );
 		editSwap4Button = new sButton();
 		editSwap4Button.Init("Swap4: " ,new Vector2( rSwap4Dis.x , rSwap4Dis.y ) , new Vector2( rSwap4Dis.width, rSwap4Dis.height ) , SwitchButton , "Swap4" );
-		exitButton = new sButton();
-		exitButton.Init("Save and Exit" , new Vector2( rExit.x , rExit.y ) , new Vector2 ( rExit.width , rExit.height ) , ExitProfile , "Exit" );
-		AddButtonsToList( editButtons , editNameButton , editAttackButton);
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
 		if( !started ) Start();
-		if( state == ProfileSceneState.Edit )
-		{
-			SendActiveButton();
-			controllerMenuInput.Update();
-		}
+
+		SendActiveButton();
+
+		controllerMenuInput.Update();
+
+		if( loadedProfile != null) print ( loadedProfile.name );
 	}
 
 	void OnGUI()
 	{
 		if( !started ) Start();
-		if( state == ProfileSceneState.CreateLoad )
-		{
-			if( createProfileButton == null )
-			{
-				createProfileButton = new sButton();
-				createProfileButton.Init("Create Profile", new Vector2(100,100) , new Vector2(buttonWidth, buttonHeight) , CreateProfileFunc , "None" );
-			}
-			createProfileButton.Draw();
-			//loadProfileButton.Draw();
-		}
-		else if( state == ProfileSceneState.Edit )
-		{
-			controllerMenuInput.Draw();
-			exitButton.Draw();
 
-			//textboxes
+		createProfileButton.Draw();
+		//loadProfileButton.Draw();
+		saveButton.Draw();
+
+		controllerMenuInput.Draw();
+		if(exitButton.Draw() ) ExitProfilePage();
+
+		profileButtons.ForEach( delegate(sButton obj) 
+		{
+			obj.Draw();
+		});
+
+		//textboxes
+		if( loadedProfile != null )
+		{
 			loadedProfile.name = GUI.TextField( rNameText , loadedProfile.name , 10 );
 			GUI.Label( rAttackDis , loadedProfile.kAttack.ToString()  );
 			GUI.Label( rJumpDis , loadedProfile.kJump.ToString()  );
@@ -182,10 +191,6 @@ public class ProfilesSceneScript : MonoBehaviour {
 			GUI.Label( rSwap2Dis , loadedProfile.kSwap2.ToString()  );
 			GUI.Label( rSwap3Dis , loadedProfile.kSwap3.ToString()  );
 			GUI.Label( rSwap4Dis , loadedProfile.kSwap4.ToString()  );
-		}
-		else
-		{
-			print ("Error - ProfileSceneScript - OnGUI - unknown state assignment");
 		}
 	}
 
@@ -197,56 +202,104 @@ public class ProfilesSceneScript : MonoBehaviour {
 		}
 	}
 
+	void MakeProfileButtons(bool clearList)
+	{
+		if(clearList) FileIO.profileContainer.profiles.Clear();
+
+		float f = 0;
+		float a = 5; // point that these start at
+		foreach( Profile p in FileIO.profileContainer.profiles )
+		{
+			sButton b = new sButton();
+			b.Init( "Load: " + p.name , new Vector2( colWidth / 2 , rowHeight * (a + f ) ), vSize , LoadProfile , p.name );
+			profileButtons.Add(b);
+			f++;
+		}
+	}
+
 	void SendActiveButton ()
 	{
-		//print( controllerMenuInput.GetIndex() );
-		switch( controllerMenuInput.GetIndex() )
+		if( mainColumn == 3 )
 		{
-		case 0:
-			controllerMenuInput.SetActiveButton( editNameButton );
-			break;
-		case 1:
-			controllerMenuInput.SetActiveButton( editAttackButton );
-			break;
-		case 2:
-			controllerMenuInput.SetActiveButton( editJumpButton );
-			break;
-		case 3:
-			controllerMenuInput.SetActiveButton( editPauseButton );
-			break;
-		case 4:
-			controllerMenuInput.SetActiveButton( editSwap1Button );
-			break;
-		case 5:
-			controllerMenuInput.SetActiveButton( editSwap2Button );
-			break;
-		case 6:
-			controllerMenuInput.SetActiveButton( editSwap3Button );
-			break;
-		case 7:
-			controllerMenuInput.SetActiveButton( editSwap4Button );
-			break;
-		case 8:
-			controllerMenuInput.SetActiveButton( exitButton );
-			break;
+			switch( controllerMenuInput.GetIndex() % 9 )
+			{
+			case 0:
+				controllerMenuInput.SetActiveButton( editNameButton );
+				break;
+			case 1:
+				controllerMenuInput.SetActiveButton( editAttackButton );
+				break;
+			case 2:
+				controllerMenuInput.SetActiveButton( editJumpButton );
+				break;
+			case 3:
+				controllerMenuInput.SetActiveButton( editPauseButton );
+				break;
+			case 4:
+				controllerMenuInput.SetActiveButton( editSwap1Button );
+				break;
+			case 5:
+				controllerMenuInput.SetActiveButton( editSwap2Button );
+				break;
+			case 6:
+				controllerMenuInput.SetActiveButton( editSwap3Button );
+				break;
+			case 7:
+				controllerMenuInput.SetActiveButton( editSwap4Button );
+				break;
+			case 8:
+				controllerMenuInput.SetActiveButton( exitButton );
+				break;
+			}
+		}
+		else
+		{
+			switch( controllerMenuInput.GetIndex() % 9 )
+			{
+			case 0:
+				controllerMenuInput.SetActiveButton( createProfileButton );
+				break;
+			case 1:
+				controllerMenuInput.SetActiveButton( saveButton );
+				break;
+			case 2:
+				controllerMenuInput.SetActiveButton( exitButton );
+				break;
+			case 3:
+				controllerMenuInput.SetActiveButton( profileButtons[0] );
+				break;
+			case 4:
+				controllerMenuInput.SetActiveButton( editSwap1Button );
+				break;
+			case 5:
+				controllerMenuInput.SetActiveButton( editSwap2Button );
+				break;
+			case 6:
+				controllerMenuInput.SetActiveButton( editSwap3Button );
+				break;
+			case 7:
+				controllerMenuInput.SetActiveButton( editSwap4Button );
+				break;
+			case 8:
+				controllerMenuInput.SetActiveButton( exitButton );
+				break;
+			default:
+				break;
+			}
 		}
 	}
 
 	void CreateProfileFunc()
 	{
-		if( state == ProfileSceneState.CreateLoad )
-		{
-			state = ProfileSceneState.Edit;
-			loadedProfile = new Profile();
-			loadedProfile.name = "Default";
-			loadedProfile.kAttack = Button.A;
-			loadedProfile.kJump = Button.B;
-			loadedProfile.kPause = Button.X;
-			loadedProfile.kSwap1 = Button.Y;
-			loadedProfile.kSwap2 = Button.LeftTrigger;
-			loadedProfile.kSwap3 = Button.LeftShoulder;
-			loadedProfile.kSwap4 = Button.RightShoulder;
-		}
+		loadedProfile = new Profile();
+		loadedProfile.name = "Default";
+		loadedProfile.kAttack = Button.A;
+		loadedProfile.kJump = Button.B;
+		loadedProfile.kPause = Button.X;
+		loadedProfile.kSwap1 = Button.Y;
+		loadedProfile.kSwap2 = Button.LeftTrigger;
+		loadedProfile.kSwap3 = Button.LeftShoulder;
+		loadedProfile.kSwap4 = Button.RightShoulder;
 	}
 
 	void SwitchButton()
@@ -277,16 +330,30 @@ public class ProfilesSceneScript : MonoBehaviour {
 		}
 	}
 
-	void ExitProfile()
+	void LoadProfile()
+	{
+		//if( FileIO.profileContainer.profiles.Find( x => x.name == controllerMenuInput.active.GetLevel() ) == null ) print ("Its null");
+		print(  controllerMenuInput.active.GetLevel() );
+		loadedProfile = FileIO.profileContainer.profiles.Find( x => x.name == controllerMenuInput.active.GetLevel() );
+	}
+
+	void SaveProfileButtonFunc()
+	{
+		FileIO.AddToContainer(loadedProfile);
+		FileIO.SaveProfiles();
+	}
+
+	void ExitProfileButtonFunc()
 	{
 		if( GamePad.GetButtonDown( GamePad.Button.A, GamePad.Index.One ) )
 		{
-			//print( "saved started" );
-			FileIO.AddToContainer(loadedProfile);
-			FileIO.SaveProfiles();
-			//print ( "saved finished" );
-			Application.LoadLevel("MainMenu");
+			ExitProfilePage();
 		}
+	}
+
+	void ExitProfilePage()
+	{
+		Application.LoadLevel("MainMenu");
 	}
 
 }
