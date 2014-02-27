@@ -32,6 +32,8 @@ public class PlayerScript : EntityScript {
 	float fXAxis;
 	float fYAxis;
 
+	Vector3 vDirection = Vector3.zero;
+
 	public bool bPlayer1;
 	public float fMoveSpeed;
 	public float fMaxAttackTime = 0.5f;
@@ -65,17 +67,16 @@ public class PlayerScript : EntityScript {
 
 	void Update()
 	{
-		print(fXAxis + ", " + fYAxis);
+		//print(fXAxis + ", " + fYAxis);
 
 		if(!goCharacter.animation.IsPlaying("Idle"))
 		{
 			if(bGrounded && fXAxis != 1 && fXAxis != 1 && fYAxis != 1 && fYAxis != -1)
+			{
+				eFacing = Facings.Idle;
 				goCharacter.animation.Play("Idle");
-
-			transform.eulerAngles = new Vector3(0, 0, 0);
-			bGoingRight = true;
-			eFacing = Facings.Right;
-			SendShadowMessage("ChangeFacing" , 0);
+				SendShadowMessage("ChangeFacing" , 4);
+			}
 		}
 
 		//if currently attacking resolve it
@@ -258,7 +259,7 @@ public class PlayerScript : EntityScript {
 	//selects the direction to send to the attack based on the facing that is selected then creates and attack and gives it the direction to travel in
 	public override void Attack()
 	{
-		Vector3 vDirection = Vector3.zero;
+
 		
 		if(eFacing == Facings.Left)
 		{
@@ -276,6 +277,13 @@ public class PlayerScript : EntityScript {
 		{
 			vDirection = new Vector3(0, 1.0f, 0);
 		}
+		if(eFacing == Facings.Idle)
+		{
+			if(bGoingRight)
+				vDirection = new Vector3(1.0f, 0, 0);
+			else
+				vDirection = new Vector3(-1.0f, 0, 0);
+		}
 
 		if(bRangedAttack)
 		{
@@ -284,7 +292,7 @@ public class PlayerScript : EntityScript {
 		}
 		if(bMeleeAttack)
 		{
-			if(eFacing == Facings.Left || eFacing == Facings.Right)
+			if(eFacing == Facings.Left || eFacing == Facings.Right || eFacing == Facings.Idle)
 			{
 				goUpAttackBox.SetActive(false);
 				goDownAttackBox.SetActive(false);
@@ -314,7 +322,28 @@ public class PlayerScript : EntityScript {
 		}
 
 		SendShadowMessage("Attack");
-		vDirection = Vector3.zero;
+	}
+
+	void ChangeWeapon()
+	{
+		if(bRangedAttack)
+		{
+			bRangedAttack = false;
+			bMeleeAttack = true;
+			bRopeAttack = false;
+		}
+		else if(bMeleeAttack)
+		{
+			bRangedAttack = false;
+			bMeleeAttack = false;
+			bRopeAttack = true;
+		}
+		else if(bRopeAttack)
+		{
+			bRangedAttack = true;
+			bMeleeAttack = false;
+			bRopeAttack = false;
+		}
 	}
 
 	void RopeHandler()

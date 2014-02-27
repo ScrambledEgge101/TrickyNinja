@@ -10,7 +10,7 @@ using System.Collections;
 
 public class PlayerAttackScript : BulletScript {
 
-
+	public int iDamage = 100;
 	Vector3 vDirection;
 	public float fMoveSpeed = 1.0f;
 	public float fLifeTime = 3.0f;
@@ -20,22 +20,22 @@ public class PlayerAttackScript : BulletScript {
 	
 	}
 	
-	void OnTriggerEnter(Collider c)
+	void OnTriggerStay(Collider c)
 	{
-		if (c.gameObject.tag != "Player" && c.gameObject.tag != "Shadow")
+		if (c.gameObject.tag == "Enemy")
 		{
-			c.gameObject.SendMessage("Hurt", 1, SendMessageOptions.DontRequireReceiver);
-			KillBullet(gameObject);
+			c.gameObject.SendMessage("Hurt", iDamage, SendMessageOptions.DontRequireReceiver);
+			Destroy (gameObject);
 		}
 	}
-	void OnCollisionEnter(Collision c)
+	/*void OnCollisionEnter(Collision c)
 	{
-		if (c.gameObject.tag != "Player" && c.gameObject.tag != "Shadow")
+		if (c.gameObject.tag == "Enemy")
 		{
 			c.gameObject.SendMessage("Hurt", 1, SendMessageOptions.DontRequireReceiver);
 			Destroy (gameObject);
 		}
-	}
+	}*/
 	
 	// Update is called once per frame
 	//moves it forward and removes time from its life and if its life is up deletes it

@@ -182,6 +182,7 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: R_YAxis_1
+<<<<<<< HEAD
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
@@ -198,6 +199,8 @@ InputManager:
     joyNum: 1
   - serializedVersion: 3
     m_Name: R_YAxis_2
+=======
+>>>>>>> upstream/master
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
@@ -211,6 +214,25 @@ InputManager:
     invert: 0
     type: 2
     axis: 4
+<<<<<<< HEAD
+=======
+    joyNum: 1
+  - serializedVersion: 3
+    m_Name: R_YAxis_2
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 0
+    dead: .300000012
+    sensitivity: 1
+    snap: 0
+    invert: 0
+    type: 2
+    axis: 4
+>>>>>>> upstream/master
     joyNum: 2
   - serializedVersion: 3
     m_Name: R_YAxis_3
@@ -358,6 +380,8 @@ InputManager:
     joyNum: 1
   - serializedVersion: 3
     m_Name: DPad_XAxis_2
+<<<<<<< HEAD
+=======
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
@@ -390,6 +414,7 @@ InputManager:
     joyNum: 3
   - serializedVersion: 3
     m_Name: DPad_XAxis_4
+>>>>>>> upstream/master
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
@@ -403,6 +428,41 @@ InputManager:
     invert: 0
     type: 2
     axis: 5
+<<<<<<< HEAD
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: DPad_XAxis_3
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 0
+    dead: .300000012
+    sensitivity: 1
+    snap: 0
+    invert: 0
+    type: 2
+    axis: 5
+    joyNum: 3
+  - serializedVersion: 3
+    m_Name: DPad_XAxis_4
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 0
+    dead: .300000012
+    sensitivity: 1
+    snap: 0
+    invert: 0
+    type: 2
+    axis: 5
+=======
+>>>>>>> upstream/master
     joyNum: 4
   - serializedVersion: 3
     m_Name: DPad_YAxis_0
@@ -422,6 +482,7 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: DPad_YAxis_1
+<<<<<<< HEAD
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
@@ -486,6 +547,8 @@ InputManager:
     joyNum: 4
   - serializedVersion: 3
     m_Name: TriggersR_0
+=======
+>>>>>>> upstream/master
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
@@ -495,6 +558,73 @@ InputManager:
     gravity: 0
     dead: .300000012
     sensitivity: 1
+<<<<<<< HEAD
+=======
+    snap: 0
+    invert: 1
+    type: 2
+    axis: 6
+    joyNum: 1
+  - serializedVersion: 3
+    m_Name: DPad_YAxis_2
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 0
+    dead: .300000012
+    sensitivity: 1
+    snap: 0
+    invert: 1
+    type: 2
+    axis: 6
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: DPad_YAxis_3
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 0
+    dead: .300000012
+    sensitivity: 1
+    snap: 0
+    invert: 1
+    type: 2
+    axis: 6
+    joyNum: 3
+  - serializedVersion: 3
+    m_Name: DPad_YAxis_4
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 0
+    dead: .300000012
+    sensitivity: 1
+    snap: 0
+    invert: 1
+    type: 2
+    axis: 6
+    joyNum: 4
+  - serializedVersion: 3
+    m_Name: TriggersR_0
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 0
+    dead: .300000012
+    sensitivity: 1
+>>>>>>> upstream/master
     snap: 0
     invert: 0
     type: 2

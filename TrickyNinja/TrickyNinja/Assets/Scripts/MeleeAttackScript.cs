@@ -27,7 +27,7 @@ public class MeleeAttackScript : MonoBehaviour {
 		iMeleeDamage = a_iNewDamage;
 	}
 
-	void OnTriggerEnter(Collider c)
+	void OnTriggerStay(Collider c)
 	{
 		if(c.tag == "Enemy")
 		{

@@ -33,7 +33,7 @@ public class InputScript2 : MonoBehaviour {
 		public KeyCode kAttackButton;
 		public KeyCode kJumpButton;
 		public KeyCode kPauseButton;
-
+		public KeyCode kSwapButton;
 
 		public KeyCode kRightKey;
 		public KeyCode kLeftKey;
@@ -78,7 +78,7 @@ public class InputScript2 : MonoBehaviour {
 		strctPlayerInputs[0].kJumpButton = KeyCode.Joystick1Button0;
 		strctPlayerInputs[0].kAttackButton = KeyCode.Joystick1Button1;
 		strctPlayerInputs[0].kPauseButton = KeyCode.Joystick1Button7;
-
+		strctPlayerInputs[0].kSwapButton = KeyCode.Joystick1Button5;
 
 		strctPlayerInputs[0].kRightKey = KeyCode.LeftArrow;
 		strctPlayerInputs[0].kLeftKey = KeyCode.RightArrow;
@@ -86,6 +86,7 @@ public class InputScript2 : MonoBehaviour {
 		strctPlayerInputs[0].kCrouchKey = KeyCode.DownArrow;
 		strctPlayerInputs[0].kJumpKey = KeyCode.Space;
 		strctPlayerInputs[0].kAttackKey = KeyCode.A;
+		strctPlayerInputs[0].kSwap1Key = KeyCode.Tab;
 
 		strctPlayerInputs[1].kJumpButton = KeyCode.Joystick2Button0;
 		strctPlayerInputs[1].kAttackButton = KeyCode.Joystick2Button1;
@@ -138,6 +139,11 @@ public class InputScript2 : MonoBehaviour {
 			{
 				gPlayer[i].SendMessage("StoppedJumping", SendMessageOptions.DontRequireReceiver);
 			}
+			if(Input.GetKeyDown(strctPlayerInputs[i].kSwap1Key) || Input.GetKeyDown(strctPlayerInputs[i].kSwapButton))
+			{
+				gPlayer[i].SendMessage("ChangeWeapon", SendMessageOptions.DontRequireReceiver);
+			}
+
 			gPlayer[i].SendMessage("SetYAxis", Input.GetAxis("Player"+(i+1)+"Vertical"), SendMessageOptions.DontRequireReceiver);
 			gPlayer[i].SendMessage("SetXAxis", Input.GetAxis("Player"+(i+1)+"Horizontal"), SendMessageOptions.DontRequireReceiver);
 		}
