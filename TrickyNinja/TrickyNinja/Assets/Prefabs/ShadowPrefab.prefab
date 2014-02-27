@@ -148,6 +148,7 @@ MonoBehaviour:
   eFacing: 2
   fMoveSpeed: 5
   gPlayerAttackPrefab: {fileID: 100000, guid: bfb90c82227da924397e25a31e378a2b, type: 2}
+  goCharacter: {fileID: 0}
   iDelay: 60
 --- !u!136 &13600000
 CapsuleCollider:

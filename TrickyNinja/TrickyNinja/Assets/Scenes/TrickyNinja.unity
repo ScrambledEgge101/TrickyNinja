@@ -2969,7 +2969,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: f8ce7da3830068e429b8f30e895471f3, type: 2}
       propertyPath: vSpawnPoint.y
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5400000, guid: f8ce7da3830068e429b8f30e895471f3, type: 2}
       propertyPath: m_Constraints
@@ -4118,7 +4118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bIncorporeal: 0
-  vSpawnPoint: {x: 0, y: 2, z: 0}
+  vSpawnPoint: {x: 0, y: 1, z: 0}
   fHealth: 1
   fSpeed: 3
 --- !u!54 &574451208
@@ -9672,6 +9672,14 @@ Prefab:
       propertyPath: goCharacter
       value: 
       objectReference: {fileID: 1195539296}
+    - target: {fileID: 13600000, guid: 86585cd826dac9a40947b4c8376ac275, type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6500004, guid: 86585cd826dac9a40947b4c8376ac275, type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 86585cd826dac9a40947b4c8376ac275, type: 2}
   m_RootGameObject: {fileID: 176561737}
@@ -14268,7 +14276,7 @@ BoxCollider:
   m_GameObject: {fileID: 2054141769}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
