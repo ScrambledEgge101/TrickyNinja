@@ -54,7 +54,6 @@ public static class FileIO
 		profilesPath = aPath;
 	}
 
-
 	public static Profile GetProfileByName( string aName)
 	{
 		foreach( Profile p in profileContainer.profiles )
